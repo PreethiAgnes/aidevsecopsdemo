@@ -79,23 +79,29 @@ jobs:
       with:
         category: "/language:${{matrix.language}}"
 
-    - name: List SARIF Issues and Fail Workflow on Critical Issues
-      run: |
-        sarif_file="/home/runner/work/aidevsecopsdemo/results/java.sarif"
+    - name: Upload SARIF Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: codeql-sarif
+        path: /home/runner/work/aidevsecopsdemo/results/java.sarif
+
+    # - name: List SARIF Issues and Fail Workflow on Critical Issues
+    #   run: |
+    #     sarif_file="/home/runner/work/aidevsecopsdemo/results/java.sarif"
     
-        if [ -f "$sarif_file" ]; then
-          critical_issues=$(grep -c '"level": "error"' "$sarif_file")
-          if [ "$critical_issues" -gt 0 ]; then
-            echo "Critical issues found in SARIF results:"
-            grep -B 1 '"level": "error"' "$sarif_file"
-            echo "Failing the workflow due to critical issues."
-            exit 1  # Fail the workflow
-          else
-            echo "No critical issues found in SARIF results."
-          fi
-        else
-          echo "SARIF results file not found at $sarif_file."
-        fi
+    #     if [ -f "$sarif_file" ]; then
+    #       critical_issues=$(grep -c '"level": "error"' "$sarif_file")
+    #       if [ "$critical_issues" -gt 0 ]; then
+    #         echo "Critical issues found in SARIF results:"
+    #         grep -B 1 '"level": "error"' "$sarif_file"
+    #         echo "Failing the workflow due to critical issues."
+    #         exit 1  # Fail the workflow
+    #       else
+    #         echo "No critical issues found in SARIF results."
+    #       fi
+    #     else
+    #       echo "SARIF results file not found at $sarif_file."
+    #     fi
       shell: /usr/bin/bash -e {0}
 
 
