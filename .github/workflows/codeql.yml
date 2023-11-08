@@ -78,3 +78,16 @@ jobs:
       uses: github/codeql-action/analyze@v2
       with:
         category: "/language:${{matrix.language}}"
+
+    - name: Check SARIF Results for Security Issues
+      run: |
+        if [ -f codeql-results.sarif ]; then
+          if grep -q '"ruleId": "security"' codeql-results.sarif; then
+            echo "Security issues found in SARIF results."
+            exit 1  # Fail the workflow
+          else
+            echo "No security issues found in SARIF results."
+          fi
+        else
+          echo "SARIF results file not found."
+        fi
