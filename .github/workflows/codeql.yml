@@ -78,3 +78,25 @@ jobs:
       uses: github/codeql-action/analyze@v2
       with:
         category: "/language:${{matrix.language}}"
+
+    - name: Perform CodeQL Analysis and Generate SARIF
+      uses: github/codeql-action/analyze@v2
+      with:
+        category: "/language:${{matrix.language}}"
+      env:
+        # Optional: Specify an output SARIF file to store the results.
+        SARIF_FILE: codeql-results.sarif
+
+    - name: Check SARIF Results for Security Issues
+      run: |
+        # Use a script to check the SARIF results for security issues.
+        if [ -f codeql-results.sarif ]; then
+          if grep -q 'security' codeql-results.sarif; then
+            echo "Security issues found in SARIF results."
+            exit 1  # Fail the workflow
+          else
+            echo "No security issues found in SARIF results."
+          fi
+        else
+          echo "SARIF results file not found."
+        fi
