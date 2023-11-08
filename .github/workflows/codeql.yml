@@ -81,13 +81,16 @@ jobs:
 
     - name: Check SARIF Results for Security Issues
       run: |
-        if [ -f codeql-results.sarif ]; then
-          if grep -q '"ruleId": "security"' codeql-results.sarif; then
+        sarif_file="/home/runner/work/aidevsecopsdemo/results/java.sarif"
+        
+        if [ -f "$sarif_file" ]; then
+          if grep -q '"ruleId": "security"' "$sarif_file"; then
             echo "Security issues found in SARIF results."
             exit 1  # Fail the workflow
           else
             echo "No security issues found in SARIF results."
           fi
         else
-          echo "SARIF results file not found."
+          echo "SARIF results file not found at $sarif_file."
         fi
+      shell: /usr/bin/bash -e {0}
