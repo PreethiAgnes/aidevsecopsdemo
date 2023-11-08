@@ -3,7 +3,7 @@ on:
   push:
     branches:
       - dev
-      - master  # Change to your default branch name if needed
+      - main  # Change to your default branch name if needed
 jobs:
   SBOM:
     runs-on: ubuntu-latest
