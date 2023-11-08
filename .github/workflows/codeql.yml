@@ -102,6 +102,6 @@ jobs:
     #     else
     #       echo "SARIF results file not found at $sarif_file."
     #     fi
-      shell: /usr/bin/bash -e {0}
+     # shell: /usr/bin/bash -e {0}
 
 
