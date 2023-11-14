@@ -1,3 +1,4 @@
+// language=java
 import java
 import semmle.code.java.api.SpringMVC
 
@@ -10,3 +11,4 @@ where
   parameter.getType().getASupertype*().hasQualifiedName("javax.persistence", "Entity") and
   entityType = parameter.getType().asClassOrInterfaceType().getBaseType()
 select method, annotation, parameter, entityType, "Entity used as argument in @RequestMapping"
+
