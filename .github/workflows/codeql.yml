@@ -27,23 +27,25 @@ jobs:
         with:
           languages: ${{ matrix.language }}
 
-      - name: Build CodeQL database
-        run: codeql database create --language=java --source-root=src --output=db
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v2
 
-      - name: Run CodeQL analysis
-        run: codeql database analyze --language=java --database=db --output=results
-
-      - name: Upload CodeQL results
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
+        with:
+          category: "/language:${{matrix.language}}"
+ 
+      - name: Upload SARIF Artifact
         uses: actions/upload-artifact@v2
         with:
-          name: codeql-results
-          path: results
+          name: codeql-sarif
+          path: /home/runner/work/aidevsecopsdemo/results/java.sarif
 
       - name: Display CodeQL results
         run: cat results/*.sarif
       - name: List SARIF Issues and Fail Workflow on Critical Issues
         run: |
-          sarif_file="/home/runner/work/aidevsecopsdemo/results/*.sarif"
+          sarif_file="/home/runner/work/aidevsecopsdemo/results/java.sarif"
       
           if [ -f "$sarif_file" ]; then
             critical_issues=$(grep -c '"level": "error"' "$sarif_file")
