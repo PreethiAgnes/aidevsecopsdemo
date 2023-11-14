@@ -25,7 +25,7 @@ jobs:
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v2
         with:
-          queries: +security-and-quality
+          queries: +./github/workflows/persistent-entity-usage.ql
           languages: ${{ matrix.language }}
           
 
