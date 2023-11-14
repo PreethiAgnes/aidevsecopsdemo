@@ -1,4 +1,4 @@
-// language=java
+language=java
 import java
 import semmle.code.java.api.SpringMVC
 
